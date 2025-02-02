@@ -12,7 +12,7 @@ class JobListingController extends Controller
     {
 
          if($request->filled('search')){
-             $jobListings = JobListing::approved()->search($request->search)->get();
+             $jobListings = JobListing::search($request->search)->get()->where('status', 'approved');
          }else{
             $jobListings = JobListing::approved()->get();
          }
