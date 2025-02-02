@@ -11,11 +11,11 @@ class JobListingController extends Controller
     public function index(Request $request)
     {
 
-        // if($request->filled('search')){
-        //     $jobListings = JobListing::approved()->search($request->search)->get();
-        // }else{
+         if($request->filled('search')){
+             $jobListings = JobListing::approved()->search($request->search)->get();
+         }else{
             $jobListings = JobListing::approved()->get();
-        // }
+         }
 
         // Fetch approved job listings
         return view('job_listings.index', compact('jobListings'));
@@ -123,4 +123,4 @@ class JobListingController extends Controller
 }
 
 
- 
+
