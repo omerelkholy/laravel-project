@@ -35,6 +35,13 @@
                 <p class="mb-2 text-lg"><strong>Application Deadline:</strong> {{ $jobListing->application_deadline }}</p>
                 <p class="mb-4 text-lg"><strong>Status:</strong> {{ ucfirst($jobListing->status) }}</p>
                 <a href="{{ route('job_listings.show', $jobListing) }}" class="bg-blue-500 text-white py-2 px-4 rounded-full hover:bg-blue-700 transition duration-300">View</a>
+                <a href="{{ route('job_listings.edit', $jobListing) }}" class="bg-green-500 text-white py-2 px-4 rounded-full hover:bg-green-700 transition duration-300">Edit</a>
+                <form action="{{ route('job_listings.destroy', $jobListing) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this job listing?');" class="inline-block">
+                    @csrf
+                    @method('DELETE')
+                <button type="submit" class="bg-red-500 text-white py-2 px-4 rounded-full hover:bg-red-700 transition duration-300">Delete</button>
+                </form>
+
             </div>
         @endforeach
     </div>
