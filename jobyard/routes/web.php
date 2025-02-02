@@ -21,6 +21,4 @@ Route::middleware('auth')->group(function () {
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
 
-Route::get('/joblistings', [JobListingController::class, 'index'])->name('joblistings.index');
-
 require __DIR__.'/auth.php';
