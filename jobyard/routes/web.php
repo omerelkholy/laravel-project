@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\JobListingController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
+use App\Models\JobListing;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -16,5 +19,11 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+
+
+Route::get('/joblistings', [JobListingController::class, 'index'])->name('joblistings.index');
 
 require __DIR__.'/auth.php';
