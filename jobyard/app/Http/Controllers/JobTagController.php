@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Job_Tag;
+use App\Models\JobTag;
 use Illuminate\Http\Request;
 
 class JobTagController extends Controller
@@ -34,7 +34,7 @@ class JobTagController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Job_Tag $job_Tag)
+    public function show(JobTag $job_Tag)
     {
         //
     }
@@ -42,7 +42,7 @@ class JobTagController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Job_Tag $job_Tag)
+    public function edit(JobTag $job_Tag)
     {
         //
     }
@@ -50,7 +50,7 @@ class JobTagController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Job_Tag $job_Tag)
+    public function update(Request $request, JobTag $job_Tag)
     {
         //
     }
@@ -58,7 +58,7 @@ class JobTagController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Job_Tag $job_Tag)
+    public function destroy(JobTag $job_Tag)
     {
         //
     }

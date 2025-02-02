@@ -26,7 +26,7 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('name'),
                 Forms\Components\TextInput::make('email')->email(),
                 Forms\Components\TextInput::make('password')->password(),
-                Forms\Components\Select::make('user_type')
+                Forms\Components\Select::make('role')
                 ->options([
                     'employer' => 'employer',
                     'candidate' => 'candidate'
@@ -41,10 +41,10 @@ class UserResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')->searchable(),
                 Tables\Columns\TextColumn::make('email')->searchable(),
-                Tables\Columns\TextColumn::make('user_type')->sortable()->searchable()->label('Role'),
+                Tables\Columns\TextColumn::make('role')->sortable()->searchable()->label('Role'),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('user_type')->options([
+                Tables\Filters\SelectFilter::make('role')->options([
                     'employer' => 'employer',
                     'candidate' => 'candidate'
                 ])
