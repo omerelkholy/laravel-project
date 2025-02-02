@@ -8,10 +8,16 @@ use Illuminate\Support\Facades\Log;
 
 class JobListingController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+
+        if($request->filled('search')){
+            $jobListings = JobListing::approved()->search($request->search)->get();
+        }else{
+            $jobListings = JobListing::approved()->get();
+        }
+
         // Fetch approved job listings
-        $jobListings = JobListing::approved()->get();
         return view('job_listings.index', compact('jobListings'));
     }
 
@@ -115,3 +121,6 @@ class JobListingController extends Controller
         return redirect()->route('job_listings.index')->with('success', 'Job listing deleted successfully.');
     }
 }
+
+
+ 

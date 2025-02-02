@@ -1,8 +1,9 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\JobListingController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\JobListingController;
 
 Route::get('/', fn() => view('welcome'));
 Route::get('/dashboard', fn() => view('dashboard'))->middleware(['auth', 'verified'])->name('dashboard');
@@ -15,5 +16,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('job_listings', JobListingController::class);    
     Route::post('/job_listings/{jobListing}/approve', [JobListingController::class, 'approve'])->middleware('auth', 'admin');
 });
+
+
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+
+
+Route::get('/joblistings', [JobListingController::class, 'index'])->name('joblistings.index');
 
 require __DIR__.'/auth.php';
