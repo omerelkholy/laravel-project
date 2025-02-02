@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Storage;
+
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -26,55 +26,20 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $user = $request->user();
-    
-        $validatedData = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255'],
-            'phone' => ['nullable', 'string', 'max:15'],
-            'profile_image' => ['nullable', 'image', 'max:2048'], 
-            'company_name' => ['nullable', 'string', 'max:255'], 
-            'resume' => ['nullable', 'file', 'mimes:pdf', 'max:2048'], 
-            'bio' => ['nullable', 'string', 'max:1000'], 
-        ]);
-    
-        $user->update([
-            'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
-            'phone' => $validatedData['phone'] ?? null,
-        ]);
-    
-        if ($request->hasFile('profile_image')) {
-            if ($user->profile_image) {
-                Storage::delete('public/' . $user->profile_image);
-            }
-            $profileImagePath = $request->file('profile_image')->store('profile_images', 'public');
-            $user->update(['profile_image' => $profileImagePath]);
-        }
-    
-        if ($user->role === 'employer') {
-            $user->employer()->update(['company_name' => $validatedData['company_name'] ?? 'Freelancer']);
-        }
-    
-        if ($user->role === 'candidate') {
-            $candidate = $user->candidate;
-            
-            if ($request->hasFile('resume')) {
-                if ($candidate->resume) {
-                    Storage::delete('public/' . $candidate->resume);
-                }
-                $resumePath = $request->file('resume')->store('resumes', 'public');
-                $candidate->update(['resume' => $resumePath]);
-            }
-    
-            $candidate->update(['bio' => $validatedData['bio'] ?? null]);
-        }
-    
-        return Redirect::route('profile')->with('status', 'profile-updated');
-    }
-    
-    
+        $request->user()->fill($request->validated());
 
+        if ($request->user()->isDirty('email')) {
+            $request->user()->email_verified_at = null;
+        }
+
+        $request->user()->save();
+
+        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+    }
+
+    /**
+     * Delete the user's account.
+     */
     public function destroy(Request $request): RedirectResponse
     {
         $request->validateWithBag('userDeletion', [
@@ -92,10 +57,4 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
-
-    public function show()
-{
-    return view('profile.profile', ['user' => Auth::user()]);
-}
-
 }

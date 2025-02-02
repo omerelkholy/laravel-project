@@ -13,7 +13,7 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
         @csrf
         @method('patch')
 
@@ -46,69 +46,19 @@
                 </div>
             @endif
         </div>
-<div>
-    <x-input-label for="profile_image" :value="__('Profile Image')" />
-    <input id="profile_image" name="profile_image" type="file" class="mt-1 block w-full" accept="image/*" />
-    @if($user->profile_image)
-        <img src="{{ asset('storage/' . $user->profile_image) }}" class="mt-2 w-24 h-24 rounded-full" alt="Profile Image">
-    @endif
-</div>
 
-<div>
-    <x-input-label for="phone" :value="__('Phone Number')" />
-    <x-text-input id="phone" name="phone" type="text" class="mt-1 block w-full" :value="old('phone', $user->phone)" />
-</div>
-
-@if($user->role === 'candidate')
-    <div>
-        <x-input-label for="bio" :value="__('Bio')" />
-        <textarea id="bio" name="bio" class="mt-1 block w-full">{{ old('bio', $user->candidate->bio) }}</textarea>
-    </div>
-@endif
-<br>
-@if($user->role === 'candidate' && $user->candidate->resume)
-    <div>
-        <p class="text-sm text-gray-500">Current Resume: 
-            <a href="{{ asset('storage/' . $user->candidate->resume) }}" class="text-blue-500 underline" target="_blank">View Resume</a>
-        </p>
-
-    
-    </div>
-@endif
-
-<br>
-        @if($user->role === 'employer')
-            <div>
-                <x-input-label for="company_name" :value="__('Company Name')" />
-                <x-text-input id="company_name" name="company_name" type="text" class="mt-1 block w-full" :value="old('company_name', $user->employer->company_name ?? '')" />
-                <x-input-error class="mt-2" :messages="$errors->get('company_name')" />
-            </div>
-        @endif
-
-        @if($user->role === 'candidate')
-            <div>
-                <x-input-label for="resume" :value="__('Upload New Resume (PDF)')" />
-                <input id="resume" name="resume" type="file" class="mt-1 block w-full" accept="application/pdf" />
-                <x-input-error class="mt-2" :messages="$errors->get('resume')" />
-
-            </div>
-        @endif
-<br>
         <div class="flex items-center gap-4">
-            
             <x-primary-button>{{ __('Save') }}</x-primary-button>
-            
-            
-            @if (session('status') === 'profile-updated')
-           <a href="{{ route('profile.update') }}" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
-                {{ __('save') }}
-            </a>
-            @endif
-            
-            <a href="{{ route('profile') }}" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
-                {{ __('Cancel') }}
-            </a>
-</div>
 
+            @if (session('status') === 'profile-updated')
+                <p
+                    x-data="{ show: true }"
+                    x-show="show"
+                    x-transition
+                    x-init="setTimeout(() => show = false, 2000)"
+                    class="text-sm text-gray-600 dark:text-gray-400"
+                >{{ __('Saved.') }}</p>
+            @endif
+        </div>
     </form>
 </section>
