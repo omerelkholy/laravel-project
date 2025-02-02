@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Middleware\PermissionMiddleware;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\Auth\RegisteredUserController;
-
+use App\Http\Controllers\getcontroller;
 
 Route::get('/', function () {
     return view('welcome');
@@ -45,8 +45,5 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/delete-resume', [RegisteredUserController::class, 'deleteResume'])->name('delete.resume');
 });
-
-
-
-
 require __DIR__.'/auth.php';
+Route::get('/apply',[GetController::class,'apply'])->name('apply.to');
