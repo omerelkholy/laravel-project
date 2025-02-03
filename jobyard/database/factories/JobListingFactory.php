@@ -31,7 +31,7 @@ class JobListingFactory extends Factory
         ];
     }
     private function generateEmployerId() {
-       return User::where("user_type",'employer')->select('id')->get()->random();
+       return User::where("role",'employer')->select('id')->get()->random();
     }
 }
 

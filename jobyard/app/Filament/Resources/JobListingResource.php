@@ -33,7 +33,7 @@ class JobListingResource extends Resource
                     'rejected'=>'Rejected'
                 ]),
                 Forms\Components\Select::Make('user_id')
-                ->options(User::where('user_type', 'employer')->pluck('name', 'id')),
+                ->options(User::where('role', 'employer')->pluck('name', 'id')),
 //                Forms\Components\Select::Make('user_id')
 //                ->relationship('user', 'name')
 //                ->searchable()->preload()->required()

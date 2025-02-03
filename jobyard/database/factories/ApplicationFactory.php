@@ -27,7 +27,7 @@ class ApplicationFactory extends Factory
     }
 
     private function generateCandidateId() {
-        return User::where("user_type",'candidate')->select('id')->get()->random();
+        return User::where("role",'candidate')->select('id')->get()->random();
     }
 
     private function generateJobId() {
