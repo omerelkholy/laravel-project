@@ -10,7 +10,7 @@ class CreateJobListingsTable extends Migration
     {
         Schema::create('job_listings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Ensure this exists
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('title');
             $table->text('description');
             $table->text('requirements');
@@ -20,7 +20,7 @@ class CreateJobListingsTable extends Migration
             $table->enum('work_type', ['remote', 'on_site', 'hybrid']);
             $table->date('application_deadline');
             $table->string('company_logo')->nullable();
-            $table->string('status')->default('pending');
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->timestamps();
         });
     }

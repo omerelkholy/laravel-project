@@ -16,6 +16,9 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
+                <x-nav-link :href="route('job_listings.index')" :active="request()->routeIs('job_listings.index')">
+                    {{ __('job_listings') }}
+                </x-nav-link>
             </div>
 
             <!-- Settings Dropdown -->

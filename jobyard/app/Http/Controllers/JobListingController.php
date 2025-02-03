@@ -5,13 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\JobListing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class JobListingController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+
+         if($request->filled('search')){
+             $jobListings = JobListing::search($request->search)->get()->where('status', 'approved');
+         }else{
+            $jobListings = JobListing::approved()->get();
+         }
+
         // Fetch approved job listings
-        $jobListings = JobListing::approved()->get();
         return view('job_listings.index', compact('jobListings'));
     }
 
@@ -38,8 +45,13 @@ class JobListingController extends Controller
             'location' => 'required|string',
             'work_type' => 'required|in:remote,on_site,hybrid',
             'application_deadline' => 'required|date',
-            'company_logo' => 'nullable|string',
+            'company_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+
+        if($request->hasFile('company_logo')){
+            $validatedData['company_logo']= $request->file('company_logo')->store('company_logo', 'public');
+        }
 
         // Assign the user ID and set status to pending
         $validatedData['user_id'] = auth()->id();
@@ -67,9 +79,9 @@ class JobListingController extends Controller
     public function edit(JobListing $jobListing)
     {
         // Check if the user is authorized to edit this job listing
-        if ($jobListing->user_id !== auth()->id() && !auth()->user()->isAdmin()) {
-            abort(403);
-        }
+    //    if ($jobListing->user_id !== auth()->id() && !auth()->user()->isAdmin()) {
+    //        abort(403);
+    //    }
 
         return view('job_listings.edit', compact('jobListing'));
     }
@@ -77,9 +89,9 @@ class JobListingController extends Controller
     public function update(Request $request, JobListing $jobListing)
     {
         // Check if the user is authorized to update this job listing
-        if ($jobListing->user_id !== auth()->id() && !auth()->user()->isAdmin()) {
-            abort(403);
-        }
+        // if ($jobListing->user_id !== auth()->id() && !auth()->user()->isAdmin()) {
+        //     abort(403);
+        // }
 
         // Validate the incoming request data
         $validatedData = $request->validate([
@@ -91,8 +103,18 @@ class JobListingController extends Controller
             'location' => 'required|string',
             'work_type' => 'required|in:remote,on_site,hybrid',
             'application_deadline' => 'required|date',
-            'company_logo' => 'nullable|string',
+            'company_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        if($request->hasFile('company_logo')) {
+            if($jobListing->company_logo) {
+                Storage::disk('public')->delete($jobListing->company_logo);
+            }
+            $validatedData['company_logo'] = $request->file('company_logo')->store('company_logo', 'public');
+        } else {
+            unset($validatedData['company_logo']);
+        }
+
 
         // Update the job listing in the database
         $jobListing->update($validatedData);
@@ -104,9 +126,9 @@ class JobListingController extends Controller
     public function destroy(JobListing $jobListing)
     {
         // Check if the user is authorized to delete this job listing
-        if ($jobListing->user_id !== auth()->id() && !auth()->user()->isAdmin()) {
-            abort(403);
-        }
+//        if ($jobListing->user_id !== auth()->id() && !auth()->user()->isAdmin()) {
+//            abort(403);
+//        }
 
         // Delete the job listing from the database
         $jobListing->delete();
@@ -115,3 +137,6 @@ class JobListingController extends Controller
         return redirect()->route('job_listings.index')->with('success', 'Job listing deleted successfully.');
     }
 }
+
+
+

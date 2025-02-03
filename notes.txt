@@ -1,0 +1,9 @@
+git clone لينك البتاع
+composer install
+copy from .env.example to .env
+php artisan key:generate
+npm install
+
+
+npm run dev
+php artisan serve

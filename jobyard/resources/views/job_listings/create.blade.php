@@ -2,9 +2,9 @@
 
 @section('content')
 <div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-6 text-white">Create New Job Listing</h1>
+    <h1 class="text-3xl font-bold mb-6 text-white text-center">Create New Job Listing</h1>
 
-    <form action="{{ route('job_listings.store') }}" method="POST" class="max-w-2xl mx-auto bg-gray-800 p-8 rounded-lg shadow-md">
+    <form action="{{ route('job_listings.store') }}" method="POST" enctype="multipart/form-data" class="max-w-2xl mx-auto bg-gray-800 p-8 rounded-lg shadow-md" >
         @csrf
 
         @foreach (['title', 'description', 'requirements', 'benefits', 'salary_range', 'location', 'company_logo'] as $field)
@@ -12,12 +12,14 @@
                 <label for="{{ $field }}" class="block text-sm font-medium text-gray-300">{{ ucwords(str_replace('_', ' ', $field)) }}</label>
                 @if (in_array($field, ['description', 'requirements', 'benefits']))
                     <textarea name="{{ $field }}" id="{{ $field }}" rows="4" required class="mt-1 block w-full px-3 py-2 border border-gray-600 bg-gray-700 text-white rounded-md focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                @elseif(in_array($field, ['company_logo']))
+                    <label for="{{ $field }}" class="block text-sm font-medium text-gray-300"></label>
+                    <input type="file" name="{{ $field }}" id="{{ $field }}" class="mt-1 block w-full px-3 py-2 border border-gray-600 bg-gray-700 text-white rounded-md focus:ring-indigo-500 focus:border-indigo-500">
                 @else
                     <input type="text" name="{{ $field }}" id="{{ $field }}" required class="mt-1 block w-full px-3 py-2 border border-gray-600 bg-gray-700 text-white rounded-md focus:ring-indigo-500 focus:border-indigo-500">
                 @endif
             </div>
         @endforeach
-
         <div class="mb-6">
             <label for="work_type" class="block text-sm font-medium text-gray-300">Work Type</label>
             <select name="work_type" id="work_type" required class="mt-1 block w-full px-3 py-2 border border-gray-600 bg-gray-700 text-white rounded-md focus:ring-indigo-500 focus:border-indigo-500">

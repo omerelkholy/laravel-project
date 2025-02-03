@@ -4,25 +4,54 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Laravel\Scout\Searchable;
 
 class JobListing extends Model
 {
-    use HasFactory;
+    /** @use HasFactory<\Database\Factories\JobListingFactory> */
+    use HasFactory, Searchable;
 
-    protected $fillable = [
-        'user_id', 'title', 'description', 'requirements', 
-        'benefits', 'salary_range', 'location', 'work_type', 
-        'application_deadline', 'company_logo', 'status',
-    ];
-
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    // Define the approved method
-    public function scopeApproved($query)
+
+    public function applications(): HasMany
     {
-        return $query->where('status', 'approved');
+        return $this->hasMany(Application::class);
     }
+
+
+    public function jobTag(): HasMany
+    {
+        return $this->hasMany(JobTag::class);
+    }
+
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'title'=>$this->title,
+            'benefits'=>$this->benefits,
+            'requirements'=>$this->requirements,
+            'salary_range'=>$this->salary_range,
+            'location'=>$this->location,
+            'work_type'=>$this->work_type
+        ];
+    }
+
+     // Define the approved method
+     public function scopeApproved($query)
+     {
+         return $query->where('status', 'approved');
+     }
 }
+
+
+
+   
+
+   

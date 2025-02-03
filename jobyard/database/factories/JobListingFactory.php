@@ -2,27 +2,36 @@
 
 namespace Database\Factories;
 
-use App\Models\JobListing;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\JobListing>
+ */
 class JobListingFactory extends Factory
 {
-    protected $model = JobListing::class;
-
-    public function definition()
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition(): array
     {
         return [
-            'user_id' => \App\Models\User::where('role', 'employer')->first()->id,
-            'title' => $this->faker->jobTitle,
-            'description' => $this->faker->paragraph,
-            'requirements' => $this->faker->sentence,
-            'benefits' => $this->faker->sentence,
-            'salary_range' => '$' . $this->faker->numberBetween(50000, 120000),
-            'location' => $this->faker->city,
-            'work_type' => $this->faker->randomElement(['remote', 'on_site', 'hybrid']),
-            'application_deadline' => $this->faker->dateTimeBetween('now', '+1 month'),
-            'company_logo' => null, 
-            'status' => 'approved',
+            'title'=> fake()->jobTitle(),
+            'description'=>fake()->text(),
+            'requirements'=>fake()->word(),
+            'benefits'=>fake()->text(),
+            'salary_range'=>fake()->numberBetween(1000,5000),
+            'location'=>fake()->city(),
+            'company_logo'=>fake()->word(),
+            'work_type'=>fake()->randomElement(['remote', 'on_site', 'hybrid']),
+            'application_deadline' => fake()->dateTimeBetween('now', '+1 month'),
+            'user_id'=> $this->generateEmployerId()
         ];
     }
+    private function generateEmployerId() {
+       return User::where("user_type",'employer')->select('id')->get()->random();
+    }
 }
+
