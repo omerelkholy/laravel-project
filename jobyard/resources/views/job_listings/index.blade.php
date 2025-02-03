@@ -28,7 +28,8 @@
     <div class="grid grid-cols-1 gap-8 w-full">
         @foreach ($jobListings as $jobListing)
             <div class="bg-gray-800 text-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow">
-                <h2 class="text-2xl font-semibold mb-4">{{ $jobListing->title }}</h2>
+                <h2 class="text-2xl font-semibold mb-4"><strong>Employer Name: </strong>{{ $jobListing->user->name }}</h2>
+                <h2 class="text-2xl font-semibold mb-4"><strong>Job: </strong>{{ $jobListing->title }}</h2>
                 <p class="mb-2 text-lg"><strong>Location:</strong> {{ $jobListing->location }}</p>
                 <p class="mb-2 text-lg"><strong>Work Type:</strong> {{ ucfirst($jobListing->work_type) }}</p>
                 <p class="mb-2 text-lg"><strong>Salary Range:</strong> {{ $jobListing->salary_range }}</p>
