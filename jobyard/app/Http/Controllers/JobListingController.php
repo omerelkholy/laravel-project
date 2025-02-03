@@ -79,9 +79,9 @@ class JobListingController extends Controller
     public function edit(JobListing $jobListing)
     {
         // Check if the user is authorized to edit this job listing
-//        if ($jobListing->user_id !== auth()->id() && !auth()->user()->isAdmin()) {
-//            abort(403);
-//        }
+    //    if ($jobListing->user_id !== auth()->id() && !auth()->user()->isAdmin()) {
+    //        abort(403);
+    //    }
 
         return view('job_listings.edit', compact('jobListing'));
     }
@@ -89,9 +89,9 @@ class JobListingController extends Controller
     public function update(Request $request, JobListing $jobListing)
     {
         // Check if the user is authorized to update this job listing
-//        if ($jobListing->user_id !== auth()->id() && !auth()->user()->isAdmin()) {
-//            abort(403);
-//        }
+        // if ($jobListing->user_id !== auth()->id() && !auth()->user()->isAdmin()) {
+        //     abort(403);
+        // }
 
         // Validate the incoming request data
         $validatedData = $request->validate([
