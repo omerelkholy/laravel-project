@@ -20,7 +20,7 @@
                 <p class="mb-2 text-lg"><strong>Work Type:</strong> {{ ucfirst($jobListing->work_type) }}</p>
                 <p class="mb-2 text-lg"><strong>Salary Range:</strong> {{ $jobListing->salary_range }}</p>
                 <p class="mb-2 text-lg"><strong>Application Deadline:</strong> {{ $jobListing->application_deadline }}</p>
-                <p class="mb-4 text-lg"><strong>Status:</strong> {{ ucfirst($jobListing->status) }}</p>
+                <!-- <p class="mb-4 text-lg"><strong>Status:</strong> {{ ucfirst($jobListing->status) }}</p> -->
                 <a href="{{ route('job_listings.show', $jobListing) }}" class="bg-blue-500 text-white py-2 px-4 rounded-full hover:bg-blue-700 transition duration-300">View</a>
                 <a href="{{ route('job_listings.show', $jobListing) }}" class="bg-green-500 text-white py-2 px-4 rounded-full hover:bg-green-700 transition duration-300">Apply</a>
             </div>
